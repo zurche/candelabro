@@ -76,14 +76,9 @@ private fun UpperShadow(
             maxValue - closeValue
         } else {
             maxValue - openValue
-        } * VALUE_MAGNIFIER
+        }
 
-    Divider(
-        color = Color.Black,
-        modifier = Modifier
-            .height(upperShadowHeight.dp)
-            .width(1.dp)
-    )
+    Shadow(upperShadowHeight)
 }
 
 @Composable
@@ -120,12 +115,18 @@ private fun LowerShadow(
             openValue - minValue
         } else {
             closeValue - minValue
-        } * VALUE_MAGNIFIER
+        }
 
+    Shadow(lowerShadowHeight)
+}
+
+@Composable
+private fun Shadow(shadowHeight: Double) {
+    val finalHeight = shadowHeight * VALUE_MAGNIFIER
     Divider(
         color = Color.Black,
         modifier = Modifier
-            .height(lowerShadowHeight.dp)
+            .height(finalHeight.dp)
             .width(1.dp)
     )
 }
