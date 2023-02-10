@@ -29,6 +29,7 @@ private val defaultValues = listOf(
     )
 )
 private const val VALUE_MAGNIFIER = 10
+private var TOP_OFFSET = 0
 
 @Preview("Main View")
 @Composable
@@ -38,6 +39,7 @@ fun CandelabroChart(
     Row {
         for (dayValue in dailyValues) {
             Candle(dayValue)
+            TOP_OFFSET += 20
         }
     }
 }
@@ -46,7 +48,9 @@ fun CandelabroChart(
 private fun Candle(dayValue: StockDayValue) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.width(20.dp)
+        modifier = Modifier
+            .width(20.dp)
+            .padding(top = TOP_OFFSET.dp)
     ) {
         with(dayValue) {
             val isGreenDay = closeValue > openValue
