@@ -12,7 +12,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.zurche.candelabro.model.StockDayValue
 
-val defaultValues = listOf(
+private val defaultValues = listOf(
     StockDayValue(
         null,
         6.0,
@@ -28,6 +28,7 @@ val defaultValues = listOf(
         1.0
     )
 )
+private const val VALUE_MAGNIFIER = 10
 
 @Preview("Main View")
 @Composable
@@ -40,8 +41,6 @@ fun CandelabroChart(
         }
     }
 }
-
-const val VALUE_MAGNIFIER = 10
 
 @Composable
 private fun Candle(dayValue: StockDayValue) {
