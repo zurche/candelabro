@@ -37,6 +37,18 @@ private val defaultValues = listOf(
         109.87,
         110.43,
         108.53
+    ),
+    StockDayValue(
+        109.30,
+        111.63,
+        112.12,
+        108.86
+    ),
+    StockDayValue(
+        112.20,
+        111.78,
+        113.33,
+        110.29
     )
 )
 private const val VALUE_MAGNIFIER = 10
@@ -59,7 +71,7 @@ fun CandelabroChart(
 private fun Candle(dayValue: StockDayValue, topOffset: Dp) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.padding(top = topOffset)
+        modifier = Modifier.padding(top = topOffset, start = 2.dp, end = 2.dp, bottom = 1.dp)
     ) {
         with(dayValue) {
             val isGreenDay = close > open
