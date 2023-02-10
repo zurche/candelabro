@@ -48,27 +48,53 @@ private fun Candle(dayValue: StockDayValue) {
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.width(20.dp)
     ) {
-        val isGreenDay = dayValue.closeValue > dayValue.openValue
+        with(dayValue) {
+            val isGreenDay = closeValue > openValue
 
-        UpperShadow(isGreenDay, dayValue)
+            UpperShadow(isGreenDay, maxValue, closeValue, openValue)
 
-        RealBody(isGreenDay, dayValue)
+            RealBody(isGreenDay, closeValue, openValue)
 
-        LowerShadow(isGreenDay, dayValue)
+            LowerShadow(isGreenDay, openValue, minValue, closeValue)
+        }
     }
+}
+
+@Composable
+private fun UpperShadow(
+    isGreenDay: Boolean,
+    maxValue: Double,
+    closeValue: Double,
+    openValue: Double
+) {
+    val upperShadowHeight =
+        if (isGreenDay) {
+            maxValue - closeValue
+        } else {
+            maxValue - openValue
+        } * VALUE_MAGNIFIER
+
+    Divider(
+        color = Color.Black,
+        modifier = Modifier
+            .height(upperShadowHeight.dp)
+            .width(1.dp)
+    )
 }
 
 @Composable
 private fun RealBody(
     isGreenDay: Boolean,
-    dayValue: StockDayValue
+    closeValue: Double,
+    openValue: Double
 ) {
     val realBodyHeight =
         if (isGreenDay) {
-            (dayValue.closeValue - dayValue.openValue) * VALUE_MAGNIFIER
+            closeValue - openValue
         } else {
-            (dayValue.openValue - dayValue.closeValue) * VALUE_MAGNIFIER
-        }
+            openValue - closeValue
+        } * VALUE_MAGNIFIER
+
     Box(
         modifier = Modifier
             .height(realBodyHeight.dp)
@@ -81,40 +107,21 @@ private fun RealBody(
 @Composable
 private fun LowerShadow(
     isGreenDay: Boolean,
-    dayValue: StockDayValue
+    openValue: Double,
+    minValue: Double,
+    closeValue: Double
 ) {
     val lowerShadowHeight =
         if (isGreenDay) {
-            (dayValue.openValue - dayValue.minValue) * VALUE_MAGNIFIER
+            openValue - minValue
         } else {
-            (dayValue.closeValue - dayValue.minValue) * VALUE_MAGNIFIER
-        }
+            closeValue - minValue
+        } * VALUE_MAGNIFIER
 
     Divider(
         color = Color.Black,
         modifier = Modifier
             .height(lowerShadowHeight.dp)
-            .width(1.dp)
-    )
-}
-
-@Composable
-private fun UpperShadow(
-    isGreenDay: Boolean,
-    dayValue: StockDayValue
-) {
-    val upperShadowHeight =
-        if (isGreenDay) {
-            (dayValue.maxValue - dayValue.closeValue) * VALUE_MAGNIFIER
-        } else {
-            (dayValue.maxValue - dayValue.openValue) * VALUE_MAGNIFIER
-        }
-
-
-    Divider(
-        color = Color.Black,
-        modifier = Modifier
-            .height(upperShadowHeight.dp)
             .width(1.dp)
     )
 }
