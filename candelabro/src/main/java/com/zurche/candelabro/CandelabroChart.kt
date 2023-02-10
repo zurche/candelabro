@@ -9,27 +9,37 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.zurche.candelabro.model.StockDayValue
 
 private val defaultValues = listOf(
     StockDayValue(
-        null,
-        6.0,
-        8.0,
-        10.0,
-        4.0
+        108.50,
+        109.39,
+        109.94,
+        106.90
     ),
     StockDayValue(
-        null,
-        8.0,
-        3.0,
-        10.0,
-        1.0
+        110.67,
+        113.21,
+        113.21,
+        109.69
+    ),
+    StockDayValue(
+        111.47,
+        110.71,
+        113.14,
+        110.37
+    ),
+    StockDayValue(
+        110.17,
+        109.87,
+        110.43,
+        108.53
     )
 )
 private const val VALUE_MAGNIFIER = 10
-private var TOP_OFFSET = 0
 
 @Preview("Main View")
 @Composable
@@ -37,29 +47,28 @@ fun CandelabroChart(
     dailyValues: List<StockDayValue> = defaultValues
 ) {
     Row {
+        val highestMaxDailyValue: Double = dailyValues.maxOf { it.high }
         for (dayValue in dailyValues) {
-            Candle(dayValue)
-            TOP_OFFSET += 20
+            val offset = (highestMaxDailyValue - dayValue.high) * VALUE_MAGNIFIER
+            Candle(dayValue, offset.dp)
         }
     }
 }
 
 @Composable
-private fun Candle(dayValue: StockDayValue) {
+private fun Candle(dayValue: StockDayValue, topOffset: Dp) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .width(20.dp)
-            .padding(top = TOP_OFFSET.dp)
+        modifier = Modifier.padding(top = topOffset)
     ) {
         with(dayValue) {
-            val isGreenDay = closeValue > openValue
+            val isGreenDay = close > open
 
-            UpperShadow(isGreenDay, maxValue, closeValue, openValue)
+            UpperShadow(isGreenDay, high, close, open)
 
-            RealBody(isGreenDay, closeValue, openValue)
+            RealBody(isGreenDay, close, open)
 
-            LowerShadow(isGreenDay, openValue, minValue, closeValue)
+            LowerShadow(isGreenDay, open, low, close)
         }
     }
 }
@@ -99,7 +108,7 @@ private fun RealBody(
             .height(realBodyHeight.dp)
             .border(1.dp, Color.Black)
             .background(if (isGreenDay) Color.Green else Color.Red)
-            .padding(8.dp)
+            .padding(5.dp)
     )
 }
 
