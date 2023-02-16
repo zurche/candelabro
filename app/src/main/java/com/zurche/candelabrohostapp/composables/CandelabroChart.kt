@@ -1,4 +1,4 @@
-package com.zurche.candelabrohostapp
+package com.zurche.candelabrohostapp.composables
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -11,52 +11,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.zurche.candelabro.model.StockDayValue
+import com.zurche.candelabrohostapp.model.CandleData
 
-private val defaultValues = listOf(
-    StockDayValue(
-        108.50,
-        109.39,
-        109.94,
-        106.90
-    ),
-    StockDayValue(
-        110.67,
-        113.21,
-        113.21,
-        109.69
-    ),
-    StockDayValue(
-        111.47,
-        110.71,
-        113.14,
-        110.37
-    ),
-    StockDayValue(
-        110.17,
-        109.87,
-        110.43,
-        108.53
-    ),
-    StockDayValue(
-        109.30,
-        111.63,
-        112.12,
-        108.86
-    ),
-    StockDayValue(
-        112.20,
-        111.78,
-        113.33,
-        110.29
-    )
-)
 private const val VALUE_MAGNIFIER = 10
 
 @Preview("Main View")
 @Composable
 fun CandelabroChart(
-    dailyValues: List<StockDayValue> = defaultValues
+    dailyValues: List<CandleData> = mockCandleData
 ) {
     Row {
         val highestMaxDailyValue: Double = dailyValues.maxOf { it.high }
@@ -68,7 +30,7 @@ fun CandelabroChart(
 }
 
 @Composable
-private fun Candle(dayValue: StockDayValue, topOffset: Dp) {
+private fun Candle(dayValue: CandleData, topOffset: Dp) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.padding(top = topOffset, start = 2.dp, end = 2.dp, bottom = 1.dp)
@@ -92,13 +54,7 @@ private fun UpperShadow(
     closeValue: Double,
     openValue: Double
 ) {
-    val upperShadowHeight =
-        if (isGreenDay) {
-            maxValue - closeValue
-        } else {
-            maxValue - openValue
-        }
-
+    val upperShadowHeight = if (isGreenDay) maxValue - closeValue else maxValue - openValue
     Shadow(upperShadowHeight)
 }
 
@@ -131,13 +87,7 @@ private fun LowerShadow(
     minValue: Double,
     closeValue: Double
 ) {
-    val lowerShadowHeight =
-        if (isGreenDay) {
-            openValue - minValue
-        } else {
-            closeValue - minValue
-        }
-
+    val lowerShadowHeight = if (isGreenDay) openValue - minValue else closeValue - minValue
     Shadow(lowerShadowHeight)
 }
 

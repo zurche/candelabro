@@ -1,6 +1,6 @@
-package com.zurche.candelabro.model
+package com.zurche.candelabrohostapp.model
 
-data class StockDayValue(
+data class CandleData(
     val open: Double,
     val close: Double,
     val high: Double,
